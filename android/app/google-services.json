@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "191438346378",
+    "project_id": "trab-fernando",
+    "storage_bucket": "trab-fernando.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191438346378:android:902e549ab51549b515b573",
+        "android_client_info": {
+          "package_name": "com.example.flutter_trabalho"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa-08Mf9gXNZoWWI9tj_f5Ab9vkCi5084"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
