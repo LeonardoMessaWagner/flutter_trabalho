@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_trabalho/aplicativo.dart';
 import 'package:flutter_trabalho/servicos/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -17,37 +18,50 @@ class _HomeState extends State<Home> {
     String? email = usuario?.email;
 
     String texto = "Bem-vindo $email";
+    String selectedPage = '';
 
     return Scaffold(
       appBar: AppBar(
         title: Text(texto),
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-        ),
+        leading: Builder(builder: (context) {
+          return IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          );
+        }),
       ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
               child: Text(
-                'Menu',
+                'Menu de Opções',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                 ),
               ),
             ),
+            // ListTile(
+            //   leading: const Icon(Icons.message),
+            //   title: const Text('Messages'),
+            //   onTap: () {
+            //     setState(() {
+            //       selectedPage = 'Messages';
+            //     });
+            //   },
+            // ),
+
             ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text('Sair'),
-              onTap: () => {},
+              leading: const Icon(Icons.exit_to_app),
+              title: const Text('Sair'),
+              onTap: () => context.read<AuthService>().logout(),
             ),
           ],
         ),
