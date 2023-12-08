@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_trabalho/aplicativo.dart';
+import 'package:flutter_trabalho/paginas/appbar.dart';
 import 'package:flutter_trabalho/servicos/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -17,21 +17,8 @@ class _HomeState extends State<Home> {
     final usuario = authService.usuario;
     String? email = usuario?.email;
 
-    String texto = "Bem-vindo $email";
-    String selectedPage = '';
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(texto),
-        leading: Builder(builder: (context) {
-          return IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          );
-        }),
-      ),
+      appBar: CustomAppBar(title: "Olá, $email"),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -48,16 +35,11 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-            // ListTile(
-            //   leading: const Icon(Icons.message),
-            //   title: const Text('Messages'),
-            //   onTap: () {
-            //     setState(() {
-            //       selectedPage = 'Messages';
-            //     });
-            //   },
-            // ),
-
+            ListTile(
+              leading: const Icon(Icons.house),
+              title: const Text('Cadastrar Casas'),
+              onTap: () {},
+            ),
             ListTile(
               leading: const Icon(Icons.exit_to_app),
               title: const Text('Sair'),
