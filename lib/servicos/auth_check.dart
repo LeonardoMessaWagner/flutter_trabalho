@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_trabalho/paginas/home.dart';
 import 'package:flutter_trabalho/paginas/login_cad.dart';
@@ -26,9 +28,10 @@ class _authCheckState extends State<authCheck> {
   }
 
   loading() {
-    return Container(
-      child: CircularProgressIndicator(),
+    return Scaffold(
+      body: const Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }
-

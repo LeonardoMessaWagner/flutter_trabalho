@@ -9,7 +9,8 @@ class Aplicativo extends StatelessWidget {
     return MaterialApp(
       title: 'Trabalho Disp. Movel',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.green),
+      theme: ThemeData(
+          primarySwatch: Colors.blue, secondaryHeaderColor: Colors.amber),
       home: const authCheck(),
     );
   }
