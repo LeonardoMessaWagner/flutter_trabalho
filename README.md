@@ -1,16 +1,10 @@
 # flutter_trabalho
 
-A new Flutter project.
 
-## Getting Started
+## SIstema de cadastro de cidades, onde a cidade só é cadastrada se for validada que existe por uma API externa;
 
-This project is a starting point for a Flutter application.
+## Banco ( firestore)
 
-A few resources to get you started if this is your first Flutter project:
+  - servidor em São Paulo e executando em modo teste;
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
