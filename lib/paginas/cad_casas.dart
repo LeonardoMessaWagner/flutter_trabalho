@@ -8,15 +8,14 @@ class CadCasas extends StatefulWidget {
 }
 
 class _CadCasasState extends State<CadCasas> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _ruaController = TextEditingController();
+  final TextEditingController _numeroController = TextEditingController();
+  final TextEditingController _cepController = TextEditingController();
+  bool? _temGaragem = false;
+  bool? _temPiscina = false;
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    final TextEditingController _ruaController = TextEditingController();
-    final TextEditingController _numeroController = TextEditingController();
-    final TextEditingController _cepController = TextEditingController();
-    bool? _temGaragem = false;
-    bool? _temPiscina = false;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Cadastro de Casas'),
@@ -59,16 +58,20 @@ class _CadCasasState extends State<CadCasas> {
                 },
               ),
               CheckboxListTile(
-                title: Text('Tem Garagem'),
+                title: const Text('Tem Garagem'),
                 value: _temGaragem,
-                onChanged: (bool? value) {},
+                onChanged: (bool? value) {
+                  setState(() {
+                    _temGaragem = value!;
+                  });
+                },
               ),
               CheckboxListTile(
                 title: Text('Tem Piscina'),
                 value: _temPiscina,
                 onChanged: (bool? value) {
                   setState(() {
-                    _temPiscina = value;
+                    _temPiscina = value!;
                   });
 
                   ;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_trabalho/paginas/appbar.dart';
+import 'package:flutter_trabalho/paginas/cad_casas.dart';
 import 'package:flutter_trabalho/servicos/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +39,10 @@ class _HomeState extends State<Home> {
             ListTile(
               leading: const Icon(Icons.house),
               title: const Text('Cadastrar Casas'),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const CadCasas()));
+              },
             ),
             ListTile(
               leading: const Icon(Icons.exit_to_app),
