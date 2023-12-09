@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_trabalho/database/db_firebase.dart';
+import 'package:flutter_trabalho/http/constantes.dart';
 import 'package:flutter_trabalho/servicos/auth.dart';
+import 'package:http/http.dart' as http;
 
 class CasasRepository extends ChangeNotifier {
   late FirebaseFirestore db;
@@ -19,5 +21,35 @@ class CasasRepository extends ChangeNotifier {
     db = DBFirestore.get();
   }
 
-  saveCasa(String Rua, int numero, String CEP, bool garagem, bool piscina) {}
+  saveCasa(String apelido, String Rua, String numero, String CEP, bool garagem,
+      bool piscina) async {
+    try {
+      Uri url = Uri.parse(ApiConstants.baseurl + CEP + ApiConstants.endpoint);
+
+      http.Response response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        int numeroint = int.parse(numero);
+
+        final docCasa =
+            db.collection('usuarios/${auth.usuario!.uid}/minhascasas').doc();
+
+        docCasa.set({
+          'id': docCasa.id,
+          'rua': Rua,
+          'numero': numeroint,
+          'Cep': CEP,
+          'garagem': garagem,
+          'piscina': piscina,
+          'apelido': apelido
+        });
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
 }

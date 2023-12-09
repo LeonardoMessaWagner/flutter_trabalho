@@ -46,10 +46,8 @@ class AuthService extends ChangeNotifier {
       await _auth.signInWithEmailAndPassword(email: email, password: senha);
       _getUser();
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        throw AuthException('usuario não cadastrado');
-      } else if (e.code == 'wrong-password') {
-        throw AuthException('Senha incorreta');
+      if (e.code == 'invalid-credential') {
+        throw AuthException('Credenciais invalidas');
       }
     }
   }
