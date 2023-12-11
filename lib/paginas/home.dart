@@ -31,6 +31,48 @@ class _HomeState extends State<Home> {
     final authService = Provider.of<AuthService>(context);
     final usuario = authService.usuario;
     String? email = usuario?.email;
+    // ignore: no_leading_underscores_for_local_identifiers
+    Future<void> _infocasas(String apelido, String rua, int numero, String cep,
+        garagem, piscina) async {
+      if (garagem) {
+        garagem = 'Sim';
+      } else {
+        garagem = 'Não';
+      }
+      if (piscina) {
+        piscina = 'Sim';
+      } else {
+        piscina = 'Não';
+      }
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Informações'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('Apelido: $apelido'),
+                  Text('Rua: $rua'),
+                  Text('Numero: $numero'),
+                  Text('Garagem: $garagem'),
+                  Text('Piscina: $piscina'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Fechar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
 
     return Scaffold(
       appBar: CustomAppBar(title: "Olá, $email"),
@@ -72,7 +114,7 @@ class _HomeState extends State<Home> {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
@@ -89,26 +131,45 @@ class _HomeState extends State<Home> {
               return ListTile(
                 title: Text(casa['apelido']),
                 subtitle: Text('CEP: ${casa['Cep']}'),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    // Exclui o documento do Firebase Firestore
-                    FirebaseFirestore.instance
-                        .collection('usuarios/${usuario?.uid}/minhascasas')
-                        .doc(casa.id)
-                        .delete()
-                        .then((value) {
-                      // Ação após a exclusão (opcional)
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Casa excluída com sucesso')),
-                      );
-                    }).catchError((error) {
-                      // Caso ocorra um erro na exclusão
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Erro ao excluir a casa')),
-                      );
-                    });
-                  },
+                trailing: Container(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            _infocasas(
+                                casa['apelido'],
+                                casa['rua'],
+                                casa['numero'],
+                                casa['Cep'],
+                                casa['piscina'],
+                                casa['garagem']);
+                          },
+                          icon: const Icon(Icons.info)),
+                      IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () {
+                          FirebaseFirestore.instance
+                              .collection(
+                                  'usuarios/${usuario?.uid}/minhascasas')
+                              .doc(casa.id)
+                              .delete()
+                              .then((value) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Casa excluída com sucesso')),
+                            );
+                          }).catchError((error) {
+                            // Caso ocorra um erro na exclusão
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Erro ao excluir a casa')),
+                            );
+                          });
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
