@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:js_interop';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_trabalho/database/db_firebase.dart';
@@ -29,6 +32,10 @@ class CasasRepository extends ChangeNotifier {
       http.Response response = await http.get(url);
 
       if (response.statusCode == 200) {
+        Map<String, dynamic> data = json.decode(response.body);
+        if (data['erro'] == true) {
+          return false;
+        }
         int numeroint = int.parse(numero);
 
         final docCasa =
