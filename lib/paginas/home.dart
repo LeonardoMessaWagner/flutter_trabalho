@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_trabalho/paginas/appbar.dart';
 import 'package:flutter_trabalho/paginas/cad_casas.dart';
+import 'package:flutter_trabalho/paginas/edit_casas.dart';
 import 'package:flutter_trabalho/servicos/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -146,6 +147,15 @@ class _HomeState extends State<Home> {
                                 casa['garagem']);
                           },
                           icon: const Icon(Icons.info)),
+                      IconButton(
+                          onPressed: () => {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditCasasPage(casa['id'])))
+                              },
+                          icon: const Icon(Icons.edit)),
                       IconButton(
                         icon: const Icon(Icons.delete),
                         onPressed: () {
