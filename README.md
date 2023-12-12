@@ -15,7 +15,8 @@ Leonardo Messa Wagner
 
  -  ViaCEP (https://viacep.com.br/);
 
-### Execução e testes do app foram feitos nos emuladores do chrome e do edge;
+
+# - Execução e testes do app foram feitos nos emuladores do chrome e do edge;
 
 
    ##Requisito 1 Login com Firebase:
