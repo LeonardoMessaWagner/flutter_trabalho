@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:js';
-import 'dart:js_interop';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -61,26 +60,26 @@ class CasasRepository extends ChangeNotifier {
     }
   }
 
-  editCasa(casaID, newApelido, newRua, newNumero, newCep, newGaragem,
-      newPiscina) async {
+  editCasa(String casaID, String newApelido, String newRua, String newNumero,
+      String newCep, bool newGaragem, bool newPiscina) async {
     final docCasa =
         db.collection('usuarios/${auth.usuario!.uid}/minhascasas/').doc(casaID);
-    if (newApelido) {
+    if (newApelido != "") {
       docCasa.update({'apelido': newApelido});
     }
-    if (newRua) {
+    if (newRua != "") {
       docCasa.update({'rua': newRua});
     }
-    if (newNumero) {
+    if (newNumero != "") {
       docCasa.update({'numero': newNumero});
     }
-    if (newGaragem) {
-      docCasa.update({'garagem': newGaragem});
-    }
-    if (newPiscina) {
-      docCasa.update({'piscina': newPiscina});
-    }
-    if (newCep) {
+
+    docCasa.update({'garagem': newGaragem});
+
+    docCasa.update({'piscina': newPiscina});
+
+    if (newCep != '') {
+      print('entrou aqui');
       try {
         Uri url =
             Uri.parse(ApiConstants.baseurl + newCep + ApiConstants.endpoint);
@@ -89,20 +88,15 @@ class CasasRepository extends ChangeNotifier {
         if (response.statusCode == 200) {
           Map<String, dynamic> data = json.decode(response.body);
           if (data['erro'] == true) {
-            return ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-                const SnackBar(
-                    content: Text(
-                        'O CEP é invalido, demais dados foram atualizados!')));
+            return 'erro-cep';
           } else {
             docCasa.update({'Cep': newCep});
           }
         }
       } catch (e) {
-        return ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-            const SnackBar(
-                content:
-                    Text('O CEP é invalido demais dados foram atualizados')));
+        return 'erro-cep';
       }
     }
+    return 'fim';
   }
 }

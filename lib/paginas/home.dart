@@ -152,8 +152,10 @@ class _HomeState extends State<Home> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            EditCasasPage(casa['id'])))
+                                        builder: (_) => EditCasasPage(
+                                            casaId: casa['id'],
+                                            pis: casa['piscina'],
+                                            gar: casa['garagem'])))
                               },
                           icon: const Icon(Icons.edit)),
                       IconButton(

@@ -3,36 +3,79 @@ import 'package:flutter_trabalho/database/casas_store.dart';
 import 'package:provider/provider.dart';
 
 class EditCasasPage extends StatefulWidget {
-  const EditCasasPage(casaId, {super.key});
+  final String casaId;
+  final bool gar;
+  final bool pis;
+
+  const EditCasasPage({
+    Key? key,
+    required this.casaId,
+    required this.pis,
+    required this.gar,
+  }) : super(key: key);
 
   @override
   State<EditCasasPage> createState() => _EditCasasPageState();
 }
 
 class _EditCasasPageState extends State<EditCasasPage> {
-  final TextEditingController _apelidoController = TextEditingController();
-  final TextEditingController _ruaController = TextEditingController();
-  final TextEditingController _numeroController = TextEditingController();
-  final TextEditingController _cepController = TextEditingController();
-  bool? _temGaragem = false;
-  bool? _temPiscina = false;
-  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _newapelidoController = TextEditingController();
+  final TextEditingController _newruaController = TextEditingController();
+  final TextEditingController _newnumeroController = TextEditingController();
+  final TextEditingController _newcepController = TextEditingController();
+
+  bool? _newtemGaragem;
+  bool? _newtemPiscina;
+
+  @override
+  void initState() {
+    super.initState();
+    _newtemGaragem = widget.gar;
+    _newtemPiscina = widget.pis;
+  }
+
+  editar() async {
+    String resultado = await context.read<CasasRepository>().editCasa(
+        widget.casaId,
+        _newapelidoController.text,
+        _newruaController.text,
+        _newnumeroController.text,
+        _newcepController.text,
+        _newtemGaragem!,
+        _newtemPiscina!);
+
+    if (resultado == 'erro-cep') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              'Ocorreu um erro ao validar o CEP, os demais dados foram atualizados.'),
+        ),
+      );
+    } else if (resultado == 'fim') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Dados atualizados!'),
+        ),
+      );
+    }
+    // ignore: use_build_context_synchronously
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar Casa'),
+        title: Text('Edição de casas'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Form(
-          key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               TextFormField(
-                controller: _apelidoController,
+                controller: _newapelidoController,
                 decoration: const InputDecoration(labelText: 'Apelido da Casa'),
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -42,7 +85,7 @@ class _EditCasasPageState extends State<EditCasasPage> {
                 },
               ),
               TextFormField(
-                controller: _ruaController,
+                controller: _newruaController,
                 decoration: InputDecoration(labelText: 'Rua'),
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -52,7 +95,7 @@ class _EditCasasPageState extends State<EditCasasPage> {
                 },
               ),
               TextFormField(
-                controller: _numeroController,
+                controller: _newnumeroController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(labelText: 'Número'),
                 validator: (value) {
@@ -63,39 +106,32 @@ class _EditCasasPageState extends State<EditCasasPage> {
                 },
               ),
               TextFormField(
-                controller: _cepController,
+                controller: _newcepController,
                 decoration: const InputDecoration(labelText: 'CEP'),
               ),
               CheckboxListTile(
                 title: const Text('Tem Garagem'),
-                value: _temGaragem,
+                value: _newtemGaragem,
                 onChanged: (bool? value) {
                   setState(() {
-                    _temGaragem = value!;
+                    _newtemGaragem = value!;
                   });
                 },
               ),
               CheckboxListTile(
                 title: const Text('Tem Piscina'),
-                value: _temPiscina,
+                value: _newtemPiscina,
                 onChanged: (bool? value) {
                   setState(() {
-                    _temPiscina = value!;
+                    _newtemPiscina = value!;
                   });
                 },
               ),
               ElevatedButton(
-                onPressed: () async {
-                  await context.read<CasasRepository>().editCasa(
-                      casaId,
-                      _apelidoController.text,
-                      _ruaController.text,
-                      _numeroController.text,
-                      _cepController.text,
-                      _temGaragem!,
-                      _temPiscina!);
+                onPressed: () {
+                  editar();
                 },
-                child: const Text('Editar Casa'),
+                child: Text('Editar Casa'),
               ),
             ],
           ),
